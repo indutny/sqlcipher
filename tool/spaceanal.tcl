@@ -74,6 +74,7 @@ Options:
 }
   exit 1
 }
+set sqlcipher_key {}
 set file_to_analyze {}
 set flags(-pageinfo) 0
 set flags(-stats) 0
@@ -98,7 +99,7 @@ foreach arg $argv {
     puts stderr "Unknown option: $arg"
     usage
   } elseif {$file_to_analyze!=""} {
-    usage
+    set sqlcipher_key $arg
   } else {
     set file_to_analyze $arg
   }
@@ -148,6 +149,9 @@ if {$flags(-debug)} {
   proc dbtrace {txt} {puts $txt; flush stdout;}
   db trace ::dbtrace
 }
+puts [db one "PRAGMA key = \"x'$sqlcipher_key'\""]
+puts [db one {PRAGMA cipher_plaintext_header_size = 32}]
+puts [db one {PRAGMA journal_mode = WAL}]
 
 # Make sure all required compile-time options are available
 #
