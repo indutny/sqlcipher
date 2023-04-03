@@ -4064,11 +4064,6 @@ int sqlite3Fts3Init(sqlite3 *db){
   sqlite3Fts3UnicodeTokenizer(&pUnicode);
 #endif
 
-#ifdef SQLITE_TEST
-  rc = sqlite3Fts3InitTerm(db);
-  if( rc!=SQLITE_OK ) return rc;
-#endif
-
   rc = sqlite3Fts3InitAux(db);
   if( rc!=SQLITE_OK ) return rc;
 
